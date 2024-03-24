@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Hostel Management System</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+	
+	<style>
+		body {
+			height: 180vh;
+		}
+		
+		h1 {
+			margin-top: 2%;
+			margin-bottom: 4%;
+		}
+		
+		form .box {
+			height: 2.5rem;
+			width: 33%;
+			border: 0.1rem solid #eee;
+			padding: 0 1rem;
+			margin: .5rem 0rem 1.6rem 0rem;
+			font-size: 100%;
+			text-transform: none;
+		}
+			
+		form .box:focus {
+			border-color: #f39c12;
+		}
+			
+		form .box::placeholder {
+			text-transform: capitalize;
+		}
+		
+		ul {
+		  list-style-type: none;
+		  margin: 0;
+		  padding: 5px;
+		  overflow: hidden;
+		  background-color: #333;
+		}
+		
+		li {
+		  float: left;
+		  margin-left: 2vw;
+		}
+		
+		li a {
+		  display: block;
+		  color: white;
+		  text-align: center;
+		  padding: 14px 16px;
+		  text-decoration: none;
+		}
+		
+		li a:hover:not(.active) {
+		  background-color: #111;
+		}
+		
+		.active {
+		  background-color: #04AA6D;
+		}
+	</style>
+</head>
+<body>
+	<ul>
+	  <li><a th:href="@{/home}">Home</a></li>
+	  <li><a th:href="@{/viewRoom}">Room</a></li>
+	  <li><a class="active" th:href="@{/viewStudent}">Student</a></li>
+	  <li><a th:href="@{/viewStaff}">Staff</a></li>
+	  <li><a th:href="@{/viewPayment}">Payment</a></li>
+	  <li style="margin-left: 56vw;"><a th:href="@{/logout}">Logout</a></li>
+	</ul>
+	
+	<div class="container">
+		<h1>Update Student</h1>
+				
+		<form action="#" th:action="@{/saveUpdatedStudent/{room_no}(room_no=${student.room.room_no})}" th:object="${student}" method="POST">			
+			Id
+			<input type="text" th:field="*{student_id}" placeholder="Student Id" class="form-control mt-2 mb-4 col-4" readonly>
+			First Name 
+			<input type="text" th:field="*{student_fname}" placeholder="First Name" class="form-control mt-2 mb-4 col-4" required>
+			Last Name 
+			<input type="text" th:field="*{student_lname}" placeholder="Last Name" class="form-control mt-2 mb-4 col-4" required>
+			Gender
+			<br>
+			<select name="gender" th:field="*{gender}" class="box">
+				<option value="Male">Male</option>
+				<option value="Female">Female</option>
+				<option value="Other">Other</option>
+			</select>
+			<br>
+			Contact No.
+			<input type="tel" th:field="*{contact_no}" placeholder="Contact No." class="form-control mt-2 mb-4 col-4" required>
+			Email Id
+			<input type="email" th:field="*{email_id}" placeholder="Email Id" class="form-control mt-2 mb-4 col-4" required>
+			Date of Join
+			<input type="date" th:field="*{joining_date}" placeholder="Date of Join" class="form-control mt-2 mb-4 col-4" required>
+			Room No.
+			<br>
+            <select name="room" class="box" th:field="*{room}">
+                <th:block th:each="room : ${listRooms}">
+                    <option th:value="${room.room_no}" th:text="${room.room_no}"></option>
+                </th:block>
+            </select>
+            <br>	
+            Remaining Payment
+			<input type="text" th:field="*{remaining_amount}" placeholder="Remaining Amount" class="form-control mt-2 mb-4 col-4" required>
+            <button type="submit" class="btn btn-primary mt-4">Save</button>
+		</form>
+		
+		<br>
+		<hr>
+		<br>
+		
+		<a th:href="@{/viewStudent}"><button type="button" class="btn btn-primary">Back to Student List</button></a>
+	</div>
+</body>
+</html>

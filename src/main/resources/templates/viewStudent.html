@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Hostel Management System</title>
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+	integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+	crossorigin="anonymous">
+
+<style>
+button {
+	padding-left: 8%;
+	padding-right: 8%;
+	border-radius: 5px;
+}
+
+.abc {
+	margin-left: 15vh;
+	margin-right: 15vh;
+}
+
+h1 {
+	margin-top: 2%;
+	margin-bottom: 4%;
+}
+
+table {
+	margin-top: 2%;
+	border-collapse: collapse;
+	width: 100%;
+}
+
+th, td {
+	text-align: left;
+	padding: 8px;
+}
+
+tr:nth-child(even) {
+	background-color: #f2f2f2
+}
+
+th {
+	background-color: #04AA6D;
+	color: white;
+}
+
+ul {
+	list-style-type: none;
+	margin: 0;
+	padding: 5px;
+	overflow: hidden;
+	background-color: #333;
+}
+
+li {
+	float: left;
+	margin-left: 2vw;
+}
+
+li a {
+	display: block;
+	color: white;
+	text-align: center;
+	padding: 14px 16px;
+	text-decoration: none;
+}
+
+li a:hover:not(.active) {
+	background-color: #111;
+}
+
+.active {
+	background-color: #04AA6D;
+}
+</style>
+</head>
+<body>
+	<ul>
+		<li><a th:href="@{/home}">Home</a></li>
+		<li><a th:href="@{/viewRoom}">Room</a></li>
+		<li><a class="active" th:href="@{/viewStudent}">Student</a></li>
+		<li><a th:href="@{/viewStaff}">Staff</a></li>
+		<li><a th:href="@{/viewPayment}">Payment</a></li>
+		<li style="margin-left: 56vw;"><a th:href="@{/logout}">Logout</a></li>
+	</ul>
+
+	<div class="abc">
+
+		<h1>Student List</h1>
+
+		<a th:href="@{/addStudent}"><button type="button"
+				class="btn btn-primary">Add Student</button></a>
+
+		<table>
+			<thead>
+				<tr>
+					<th>Student Id</th>
+					<th>First Name</th>
+					<th>Last Name</th>
+					<th>Gender</th>
+					<th>Contact No.</th>
+					<th>Email Id</th>
+					<th>Date of Join</th>
+					<th>Room No.</th>
+					<th>Remaining Amount</th>
+					<th>Actions</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="student : ${listStudents}">
+					<td th:text="${student.student_id}"></td>
+					<td th:text="${student.student_fname}"></td>
+					<td th:text="${student.student_lname}"></td>
+					<td th:text="${student.gender}"></td>
+					<td th:text="${student.contact_no}"></td>
+					<td th:text="${student.email_id}"></td>
+					<td th:text="${student.joining_date}"></td>
+					<td style="text-align: center;" th:text="${student.room.room_no}"></td>
+					<td style="text-align: center;"
+						th:text="${student.remaining_amount}"></td>
+					<td>
+						<a th:href="@{/updateStudent/{student_id}(student_id=${student.student_id})}" class="btn btn-primary">Update</a> 
+						<a th:href="@{/deleteStudent/{student_id}(student_id=${student.student_id})}" class="btn btn-danger">Delete</a>
+						<a th:href="@{/showPaymentDetails/{student_id}(student_id=${student.student_id})}" class="btn btn-info">Pay. Details</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<br>
+		<br>
+		<div th:if="${totalPages > 1}">
+			<div class="row col-sm-10">
+				<div class="col-sm-2">Total Rows: [[${totalItems}]]</div>
+				<div class="col-sm-1">
+					<span th:each="i: ${#numbers.sequence(1, totalPages)}"> <a 
+						th:if="${currentPage != i}"
+						th:href="@{'/viewStudent/page/' + ${i}}">[[${i}]]</a> <span
+						th:unless="${currentPage != i}">[[${i}]]</span> &nbsp; &nbsp;
+					</span>
+				</div>
+				<div class="col-sm-1">
+					<a th:if="${currentPage < totalPages}" 
+						th:href="@{'/viewStudent/page/' + ${currentPage + 1}}"><button>Next</button></a> <span
+						th:unless="${currentPage < totalPages}">Next</span>
+				</div>
+
+				<div class="col-sm-1">
+					<a th:if="${currentPage < totalPages}"
+						th:href="@{'/viewStudent/page/' + ${totalPages}}"><button>Last</button></a> <span
+						th:unless="${currentPage < totalPages}">Last</span>
+				</div>
+			</div>
+		</div>
+
+		<br>
+		<hr>
+		<br> <a th:href="@{/home}"><button type="button"
+				class="btn btn-primary">Back to Home</button></a>
+	</div>
+</body>
+</html>
